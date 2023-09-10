@@ -60,9 +60,19 @@ sysinfo.txt
 # Crashlytics generated file
 crashlytics-build.properties
 
+# Odin
+# Ignore the auto-generated AOT compatibility dll.
+/Assets/Plugins/Sirenix/Assemblies/AOT/*
+# Ignore all unpacked demos.
+/Assets/Plugins/Sirenix/Demos/*
+# But keep the demo packages themselves.
+!/Assets/Plugins/Sirenix/Demos/*.unitypackage 
 
 
 # Misc
+/Assets/Unity.VisualScripting.Generated/
+/Assets/Unity.VisualScripting.Generated.meta
+/HybridCLRData/
+
 Assets/Samples
-Assets/Plugins
 Assets/Misc/AutoSave
