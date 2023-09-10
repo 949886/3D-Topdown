@@ -11,6 +11,9 @@ scopes = {
 	"last_search.310DEAF1" = "p: dir=\"CC0 Sounds\" "
 	"OpenInspectorPreview.310DEAF1" = "0"
 	"currentGroup.310DEAF1" = ""
+	"last_search.57C08F3E" = "inputcontroll"
+	"OpenInspectorPreview.57C08F3E" = "0"
+	"currentGroup.57C08F3E" = "asset"
 }
 providers = {
 	performance = {
@@ -58,10 +61,39 @@ providers = {
 		priority = 100
 		defaultAction = null
 	}
+	"com.unity.goql" = {
+		active = true
+		priority = 50
+		defaultAction = null
+	}
+	menu = {
+		active = true
+		priority = 80
+		defaultAction = null
+	}
+	settings = {
+		active = true
+		priority = 100
+		defaultAction = null
+	}
+	calculator = {
+		active = true
+		priority = 10
+		defaultAction = null
+	}
+	static_methods = {
+		active = true
+		priority = 85
+		defaultAction = null
+	}
 }
 objectSelectors = {
 }
 recentSearches = [
+	"in"
+	"resouces"
+	"3"
+	"Camera Prefabs"
 ]
 searchItemFavorites = [
 ]
