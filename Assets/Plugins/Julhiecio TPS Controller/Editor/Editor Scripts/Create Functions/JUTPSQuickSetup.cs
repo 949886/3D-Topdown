@@ -333,9 +333,11 @@ namespace JUTPSEditor
             var noSlip = (PhysicMaterial)(Resources.Load("NoSlip", typeof(PhysicMaterial)));
             col.material = noSlip;
 
+            Undo.AddComponent(CharacterGameObject, typeof(ResizableCapsuleCollider));
+
             var rb = (Rigidbody)Undo.AddComponent(CharacterGameObject, typeof(Rigidbody));
             var tps = (JUCharacterController)Undo.AddComponent(CharacterGameObject, typeof(JUCharacterController));
-
+             
             var animatorController = AssetDatabase.LoadAssetAtPath<RuntimeAnimatorController>(animatorControllerPath);
 
             //Setup Animator Controller

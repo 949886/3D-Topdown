@@ -235,6 +235,7 @@ GameObject:
   - component: {fileID: 1108160400479935249}
   - component: {fileID: 5700592897180011804}
   - component: {fileID: 9061191107087665080}
+  - component: {fileID: 5421868034426093685}
   m_Layer: 14
   m_Name: P226
   m_TagString: Untagged
@@ -437,6 +438,7 @@ MonoBehaviour:
   TotalBullets: 32
   BulletsAmounts: 16
   NumberOfShotgunBulletsPerShot: 12
+  InfiniteAmmo: 0
   Fire_Rate: 0.1
   CurrentFireRateToShoot: 0
   Precision: 25
@@ -471,6 +473,31 @@ MonoBehaviour:
   ReloadAudio: {fileID: 8300000, guid: 17534bbf483d6194e802ccd8f011b494, type: 3}
   EmptyMagazineAudio: {fileID: 8300000, guid: be916288d58d41c449a94afa1c16b3dd, type: 3}
   WeaponEquipAudio: {fileID: 8300000, guid: b77e860d6e13ce24fbcd3ce025a40025, type: 3}
+--- !u!114 &5421868034426093685
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3349917300126915435}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98fd76a429c4c664ab8d5c09832091fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ToUpDirectionWieldingID: 4
+  RayDistance: 0.3
+  BlockFireModeOnPreventClipping: 1
+  WallsLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  IsPreventing: 0
+  OnPrevent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnStopPrevent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &4121186241919847045
 GameObject:
   m_ObjectHideFlags: 0

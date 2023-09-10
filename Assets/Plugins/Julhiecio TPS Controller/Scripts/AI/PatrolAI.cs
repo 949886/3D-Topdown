@@ -8,7 +8,7 @@ namespace JUTPS.AI
     [AddComponentMenu("JU TPS/AI/Patrol AI")]
     public class PatrolAI : JUCharacterArtificialInteligenceBrain
     {
-        private JUTPS.CharacterBrain.JUCharacterBrain targetJuCharacter;
+        private CharacterBrain.JUCharacterBrain targetJuCharacter;
 
         private Transform currentTarget;
 
@@ -17,6 +17,7 @@ namespace JUTPS.AI
 
         private Vector3 smoothedTargetPosition;
         private Vector3 closestWalkablePosition;
+        private Vector3 lastVisiblePosition;
 
         [Header("Follow Settings")]
         public string[] TargetTags = new string[] { "Player" };
@@ -52,12 +53,23 @@ namespace JUTPS.AI
         private bool SawATarget = false;
         public UnityEvent _OnStopSeeingTarget;
         private bool StoppedSeeingTarget;
+
+
+        private void Start()
+        {
+            //Timed Tartget Check
+            InvokeRepeating(nameof(CheckTargets), 0.5f, 0.5f);
+        }
+
         protected virtual void Update()
         {
             if (character.IsDead) { this.enabled = false; return; }
+            
+            //Get Targets Every Frame
+            //CheckTargets();
 
-            //Get targets
-            CheckTargets();
+            //Default events check
+            CheckEndEvents();
 
             //Running check
             isRunning = (distanceFromDestination > StartRunningAtDistance);
@@ -66,7 +78,7 @@ namespace JUTPS.AI
             if (currentTarget != null)
             {
                 Debug.DrawLine(fieldViewPosition, smoothedTargetPosition, Color.green);
-                FollowAIPathState(closestWalkablePosition, isRunning);
+                HuntTheTargetState();
 
                 //Attack
                 if (distanceFromDestination < AttackAtDistance && currentTargetIsVisible && isCurrentTargetAttackable)
@@ -127,9 +139,27 @@ namespace JUTPS.AI
                 }
                 else
                 {
-                    IdleState();
+                    if (Destination == Vector3.zero)
+                    {
+                        IdleState();
+                    }
+                    else
+                    {
+                        if (distanceFromDestination < StopDistance / 2 || PathToDestination.Length == 0)
+                        {
+                            IdleState();
+                        }
+                        else
+                        {
+                            FollowAIPathState(closestWalkablePosition, isRunning);
+                        }
+                    }
                 }
             }
+
+
+            //Update target visibility
+            UpdateCurrentTarget();
         }
 
         public void CheckTargets()
@@ -138,6 +168,7 @@ namespace JUTPS.AI
             Vector3 fieldViewPosition = transform.position + transform.up * (AimUpOffset + 0.2f);
             Collider[] targets = FieldOfView.CheckViewCollider(fieldViewPosition, transform.forward, SensorLayerMask, viewerToIgnore: this.gameObject);
 
+            
             //Target Selection
             if (targets.Length > 0)
             {
@@ -164,13 +195,17 @@ namespace JUTPS.AI
                     }
                 }
             }
-            else
-            {
-                currentTarget = null;
-                targetJuCharacter = null;
-                isCurrentTargetAttackable = false;
-            }
+            
 
+
+
+
+            //Update visibility
+            currentTargetIsVisible = (targetJuCharacter == null) ? FieldOfView.IsVisibleToThisFieldOfView(currentTarget, fieldViewPosition, transform.forward, SensorLayerMask, TagsToConsiderVisible: TargetTags) : FieldOfView.IsVisibleToThisFieldOfView(targetJuCharacter.HumanoidSpine, fieldViewPosition, transform.forward, SensorLayerMask, TagsToConsiderVisible: TargetTags);
+        }
+
+        public void UpdateCurrentTarget()
+        {
             //Update events
             if (currentTarget != null && SawATarget == false)
             {
@@ -186,13 +221,21 @@ namespace JUTPS.AI
             }
 
             //Get Distance
-            distanceFromDestination = (currentTarget != null) ? Vector3.Distance(transform.position, currentTarget.position) : Vector3.Distance(transform.position, Destination);
+            //distanceFromDestination = (currentTarget != null) ? Vector3.Distance(transform.position, currentTarget.position) : Vector3.Distance(transform.position, PathToDestination[CurrentWayPointToFollow]);
+            //distanceFromDestination = (currentTarget != null) ? Vector3.Distance(transform.position, currentTarget.position) : Vector3.Distance(transform.position, Destination);
 
+            if (CurrentWayPointToFollow > PathToDestination.Length)
+            {
+                distanceFromDestination = (currentTarget != null) ? Vector3.Distance(transform.position, currentTarget.position) : Vector3.Distance(transform.position, Destination);
+            }
+            else
+            {
+                distanceFromDestination = (currentTarget != null) ? Vector3.Distance(transform.position, currentTarget.position) : Vector3.Distance(transform.position, PathToDestination[CurrentWayPointToFollow]);
+            }
             //Smooth target position
             smoothedTargetPosition = (currentTarget != null && targetJuCharacter == null) ? Vector3.Lerp(smoothedTargetPosition, currentTarget.position, LookTargetSpeed * Time.deltaTime) : smoothedTargetPosition;
 
-            //Check visibility
-            currentTargetIsVisible = (targetJuCharacter == null) ? FieldOfView.IsVisibleToThisFieldOfView(currentTarget, fieldViewPosition, transform.forward, SensorLayerMask, TagsToConsiderVisible: TargetTags) : FieldOfView.IsVisibleToThisFieldOfView(targetJuCharacter.HumanoidSpine, fieldViewPosition, transform.forward, SensorLayerMask, TagsToConsiderVisible: TargetTags);
+            //Update Visibility
             if (currentTarget == null) currentTargetIsVisible = false;
 
             //Target position in ju character are humanoid spine 
@@ -200,6 +243,9 @@ namespace JUTPS.AI
 
             //Get nearby position, this line avoid bugs with Navmesh Obstacles
             closestWalkablePosition = JUPathFinder.GetClosestWalkablePoint(currentTarget != null ? currentTarget.position : closestWalkablePosition);
+
+            //Update last visible position
+            if (currentTargetIsVisible) lastVisiblePosition = closestWalkablePosition;
 
             //Stop Following
             if (currentTarget != null)
@@ -212,6 +258,25 @@ namespace JUTPS.AI
         }
 
 
+        public void HuntTheTargetState()
+        {
+            //On player hide
+            if(StoppedSeeingTarget && currentTargetIsVisible == false)
+            {
+                FollowAIPathState(lastVisiblePosition, isRunning);
+                return;
+            }
+            //Hunt player
+            if (currentTargetIsVisible && SawATarget)
+            {
+                FollowAIPathState(closestWalkablePosition, isRunning);
+            }
+            else
+            {
+                //Return to patrol state
+                FollowWaypointPathState(isRunning);
+            }
+        }
         public void FollowAIPathState(Vector3 Position, bool Run)
         {
             GoToPosition(Position, DistanceToFinishOnePoint, Run);

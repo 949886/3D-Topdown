@@ -68,32 +68,48 @@ namespace JUTPSEditor
         //[MenuItem("GameObject/JUTPS Create/Weapons.../Weapon Aim Rotation Center", false, 0)]
         public static void CreateNewWeaponRotationCenter()
         {
-            var WeaponPivot = new GameObject("Weapon Aim Rotation Center");
-            Undo.RegisterCreatedObjectUndo(WeaponPivot, "Hit Box Setup");
+            var ItemWieldPivotRotation = new GameObject("Item Wield Rotation Center");
+            Undo.RegisterCreatedObjectUndo(ItemWieldPivotRotation, "Hit Box Setup");
 
-            WeaponPivot.AddComponent<WeaponAimRotationCenter>();
+            WeaponAimRotationCenter center = ItemWieldPivotRotation.AddComponent<WeaponAimRotationCenter>();
             if (Selection.activeGameObject != null)
             {
-                WeaponPivot.transform.position = Selection.transforms[0].position + WeaponPivot.transform.up * 1.2f;
-                WeaponPivot.transform.SetParent(Selection.transforms[0]);
+                ItemWieldPivotRotation.transform.position = Selection.transforms[0].position + ItemWieldPivotRotation.transform.up * 1.2f;
+                ItemWieldPivotRotation.transform.SetParent(Selection.transforms[0]);
             }
             else
             {
-                WeaponPivot.transform.position = SceneViewInstantiatePosition();
+                ItemWieldPivotRotation.transform.position = SceneViewInstantiatePosition();
             }
-            var WeaponPositionsParent = new GameObject("Weapons Reference Positions");
-            WeaponPositionsParent.transform.position = WeaponPivot.transform.position;
-            WeaponPositionsParent.transform.parent = WeaponPivot.transform;
+            var WeaponPositionsParent = new GameObject("Item Wielding Hands Positions");
+            WeaponPositionsParent.transform.position = ItemWieldPivotRotation.transform.position;
+            WeaponPositionsParent.transform.parent = ItemWieldPivotRotation.transform;
 
-            WeaponPivot.GetComponent<WeaponAimRotationCenter>().CreateWeaponPositionReference("Small Weapon Position Reference");
-            WeaponPivot.GetComponent<WeaponAimRotationCenter>().WeaponPositionTransform[0].localPosition = new Vector3(0.212f, 0.065f, 0.361f);
-            WeaponPivot.GetComponent<WeaponAimRotationCenter>().WeaponPositionTransform[0].localRotation = Quaternion.Euler(0, 11.383f, -94.913f);
+            center.CreateWeaponPositionReference("Small Weapon Position Reference");
+            center.WeaponPositionTransform[0].localPosition = new Vector3(0.212f, 0.227f, 0.407f);
+            center.WeaponPositionTransform[0].localRotation = Quaternion.Euler(-8.626f, 12.322f, -84.111f);
 
-            WeaponPivot.GetComponent<WeaponAimRotationCenter>().CreateWeaponPositionReference("Big Weapon Position Reference");
-            WeaponPivot.GetComponent<WeaponAimRotationCenter>().WeaponPositionTransform[1].localPosition = new Vector3(0.138f, -0.013f, 0.24f);
-            WeaponPivot.GetComponent<WeaponAimRotationCenter>().WeaponPositionTransform[1].localRotation = Quaternion.Euler(0, 11.383f, -94.913f);
+            center.CreateWeaponPositionReference("Big Weapon Position Reference");
+            center.WeaponPositionTransform[1].localPosition = new Vector3(0.207f, 0.140f, 0.24f);
+            center.WeaponPositionTransform[1].localRotation = Quaternion.Euler(0, 11.383f, -94.913f);
 
-            WeaponPivot.GetComponent<WeaponAimRotationCenter>().StoreLocalTransform();
+            center.CreateWeaponPositionReference("Flash Light");
+            center.WeaponPositionTransform[2].localPosition = new Vector3(0.302f, 0.167f, 0.258f);
+            center.WeaponPositionTransform[2].localRotation = Quaternion.Euler(-81.350f, -33.581f, -49.971f);
+
+            center.CreateWeaponPositionReference("Left Hand Small Weapon Position");
+            center.WeaponPositionTransform[3].localPosition = new Vector3(0.055f, 0.253f, 0.489f);
+            center.WeaponPositionTransform[3].localRotation = Quaternion.Euler(-6.916f, -2.793f, 79.35f);
+
+            center.CreateWeaponPositionReference("Small Gun Prevent Cliping");
+            center.WeaponPositionTransform[3].localPosition = new Vector3(0.223f, 0.081f, 0.22f);
+            center.WeaponPositionTransform[3].localRotation = Quaternion.Euler(-80.399f, -267.951f, 178.884f);
+
+            center.CreateWeaponPositionReference("Big Gun Prevent Clipping");
+            center.WeaponPositionTransform[3].localPosition = new Vector3(0.217f, 0.046f, 0.259f);
+            center.WeaponPositionTransform[3].localRotation = Quaternion.Euler(-83.967f, -349.849f, 228.624f);
+
+            center.StoreLocalTransform();
         }
 
 

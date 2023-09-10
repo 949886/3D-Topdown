@@ -94,6 +94,7 @@ GameObject:
   - component: {fileID: 8873450923734636497}
   - component: {fileID: 626888908296150715}
   - component: {fileID: 6467831754146836544}
+  - component: {fileID: -7963561596682162276}
   m_Layer: 14
   m_Name: SNIPER M82
   m_TagString: Untagged
@@ -266,6 +267,7 @@ MonoBehaviour:
   TotalBullets: 14
   BulletsAmounts: 7
   NumberOfShotgunBulletsPerShot: 12
+  InfiniteAmmo: 0
   Fire_Rate: 1.2
   CurrentFireRateToShoot: 0
   Precision: 20
@@ -329,6 +331,31 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &-7963561596682162276
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2930857990971156363}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98fd76a429c4c664ab8d5c09832091fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ToUpDirectionWieldingID: 5
+  RayDistance: 0.9
+  BlockFireModeOnPreventClipping: 1
+  WallsLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  IsPreventing: 0
+  OnPrevent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnStopPrevent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &5496563023706699315
 GameObject:
   m_ObjectHideFlags: 0

@@ -10,13 +10,13 @@ namespace JUTPS.AI
         public static FollowingState GetPathFollowingState(Transform PathFollower, ref Vector3 OldFollowerPosition, Vector3[] path, int currentPathCornerID, float StoppingDistance = 3)
         {
             FollowingState state = FollowingState.None;
-            if (path.Length < 1) return state;
+            if (path.Length < 2) return state;
 
             float distanceToNextCorner = Vector3.Distance(PathFollower.position, path[currentPathCornerID]);
             float distanceToLastCorner = Vector3.Distance(PathFollower.position, path[path.Length-1]);
 
             if (OldFollowerPosition == Vector3.zero) OldFollowerPosition = PathFollower.position;
-            float followerSpeed = (PathFollower.position - OldFollowerPosition).magnitude * 100f;
+            float followerSpeed = (PathFollower.position - OldFollowerPosition).magnitude * 2f;
             OldFollowerPosition = PathFollower.position;
 
 

@@ -22,7 +22,7 @@ namespace JUTPS
         public bool DecreaseSpeedOnJump = false;
         public bool BlockVerticalInput;
         public bool BlockHorizontalInput;
-        public bool BlockFireModeOnCursorVisible = true;
+        public bool BlockFireModeOnCursorVisible = false;
         public bool BlockFireModeOnPunching = true;
         public bool EnablePunchAttacks = true;
         public bool EnableRoll = true;
@@ -36,7 +36,7 @@ namespace JUTPS
         public string[] PhysicalDamageIgnoreTags = new string[] { "Player", "Enemy", "Bones", "Wall", "Bullet" };
         void FixedUpdate()
         {
-            if (IsDead == true || DisableAllMove == true) { return; }
+            if (IsDead == true || DisableAllMove == true || JUPauseGame.Paused) { return; }
             Movement();
             SlopeSlide();
             StepCorrectionMovement();
@@ -44,6 +44,8 @@ namespace JUTPS
 
         void Update()
         {
+            if (JUPauseGame.Paused) return;
+
             FootPlacementIKController();
 
             GroundCheck();
@@ -63,8 +65,8 @@ namespace JUTPS
 
                 StepCorrectionCalculation();
 
-                RefreshItemAimRotationPivot();
                 Rotate(HorizontalX, VerticalY);
+                RefreshItemAimRotationPivot();
 
                 WeaponOrientator();
                 WieldingIKWeightController();
@@ -149,7 +151,7 @@ namespace JUTPS
                 _Jump();
             }
             //New Jump Delay
-            _NewJumpDelay(0.3f, DecreaseSpeedOnJump);
+            _NewJumpDelay(0.2f, DecreaseSpeedOnJump);
 
 
             //Roll
@@ -190,7 +192,7 @@ namespace JUTPS
             //Start sprinting impulse
             if (JUInput.GetButtonDown(JUInput.Buttons.RunButton) && AutoRun && SprintOnRunButton)
             {
-                SprintSpeedDecrease = 4;
+                SprintSpeedDecrease = 6;
                 //Debug.Log("Start Sprinting");
             }
             //Force stop sprinting
@@ -685,7 +687,7 @@ namespace JUTPS
             }
             else
             {
-                float IKTransitionSpeed = 3;
+                float IKTransitionSpeed = 2;
                 if (IsRolling == false && IsReloading == false)
                 {
                     // >>> Left Hand IK Weight 
@@ -805,11 +807,13 @@ namespace JUTPS
 
             //Prone IK Adjust
             Vector3 HumanoidSpinePronePosition = HumanoidSpine.position + transform.forward * 0.2f - transform.up * 0.2f;
+            Vector3 TargetHumanoidSpinePosition = IsProne == false ? HumanoidSpine.position : HumanoidSpinePronePosition;
 
             // Weapons Aim Rotation Center
-            PivotItemRotation.transform.position = IsProne == false ? HumanoidSpine.position : HumanoidSpinePronePosition;
+            PivotItemRotation.transform.position = TargetHumanoidSpinePosition;
             Vector3 CamEuler = GetLookDirectionEulerAngles();
-            //CamEuler.y = transform.eulerAngles.y;
+
+
             //Refres item wielding rotation center rotation
             if (FiringMode)
             {
@@ -819,6 +823,7 @@ namespace JUTPS
             {
                 PivotItemRotation.transform.rotation = Quaternion.Lerp(PivotItemRotation.transform.rotation, transform.rotation, 10 * RotationSpeed * Time.deltaTime);
             }
+            //PivotItemRotation.transform.localEulerAngles = new Vector3(PivotItemRotation.transform.localEulerAngles.x, PivotItemRotation.transform.localEulerAngles.y, transform.localEulerAngles.z);
         }
         #endregion
 
@@ -947,8 +952,8 @@ namespace JUTPS
             //Firing Mode IK
             if (IsRolling == false && IsDriving == false)
             {
-                LeftHandToRespectiveIKPosition(LeftHandWeightIK, LeftHandWeightIK / 2);
-                RightHandToRespectiveIKPosition(RightHandWeightIK, RightHandWeightIK / 2);
+                LeftHandToRespectiveIKPosition(LeftHandWeightIK, LeftHandWeightIK / 1.2f);
+                RightHandToRespectiveIKPosition(RightHandWeightIK, RightHandWeightIK / 1.2f);
 
                 Vector3 LookingPosition = GetLookPosition();
                 //Vector3 FinalLookingPosition = transform.position + transform.forward * 15f;

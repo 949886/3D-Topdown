@@ -22,6 +22,7 @@ namespace JUTPS.WeaponSystem
 		public int TotalBullets = 150;
 		public int BulletsAmounts = 10;
 		public int NumberOfShotgunBulletsPerShot = 12;
+		public bool InfiniteAmmo = false;
 		//Fire Rate
 		public float Fire_Rate = 0.3f;
 		[HideInInspector] public float CurrentFireRateToShoot;
@@ -80,6 +81,8 @@ namespace JUTPS.WeaponSystem
 		private AudioSource mAudioSource;
 		private bool PlayedEmptySound;
 
+
+		private bool enableBulletDirectionCorrection = true;
 		public enum WeaponFireMode { Auto, SemiAuto, BoltAction, Shotgun }
 		public enum WeaponAimMode { None, CameraApproach, Scope }
 		public enum Axis { Z, X, Y }
@@ -104,6 +107,15 @@ namespace JUTPS.WeaponSystem
 					CamPivot = thirdPersonController.MyPivotCamera;
 					TPSControllerUser = thirdPersonController;
 					ListToIgnoreBulletCollision = thirdPersonController.CharacterHitBoxes;
+				}
+
+				if (Owner.TryGetComponent(out JUTPS.ActionScripts.AimOnMousePosition aimOnMousePos))
+				{
+					enableBulletDirectionCorrection = false;
+				}
+				if (Owner.TryGetComponent(out JUTPS.ActionScripts.AimOnRightJoystickDirection aimOnJoystickPos))
+				{
+					enableBulletDirectionCorrection = false;
 				}
 			}
 
@@ -255,13 +267,17 @@ namespace JUTPS.WeaponSystem
 		}
 		public void Shot()
 		{
+            if (CanUseItem == false)
+            {
+				Debug.Log("Tried to shot but the CanUseItem variable is false, if using Prevent Gun Clipping ignore this message.");
+				return;
+            }
 			RaycastHit CrosshairHit;
 
 			if (FireMode != Weapon.WeaponFireMode.Shotgun)
 			{
-				
 				RaycastHit CameraRaycastHit;
-				if(CameraPosition != Vector3.zero)
+				if(enableBulletDirectionCorrection && CameraPosition != Vector3.zero)
 				{
 					if (Physics.Raycast(CameraPosition, ShootDirection, out CameraRaycastHit, 500, RaycastingLayers))
 					{
@@ -329,7 +345,7 @@ namespace JUTPS.WeaponSystem
 			{
 				
 				RaycastHit CameraRaycastHit;
-				if (CameraPosition != Vector3.zero)
+				if (enableBulletDirectionCorrection && CameraPosition != Vector3.zero)
 				{
 					if (Physics.Raycast(CameraPosition, ShootDirection, out CameraRaycastHit, 500, RaycastingLayers))
 					{
@@ -422,7 +438,7 @@ namespace JUTPS.WeaponSystem
 			CanUseItem = false;
 
 			//Subtracts Ammunition
-			BulletsAmounts -= 1;
+			if(!InfiniteAmmo)BulletsAmounts -= 1;
 
 			//Procedural Animation Trigger
 			if (GenerateProceduralAnimation == true)

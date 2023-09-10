@@ -226,7 +226,7 @@ namespace JUTPS.AI
         {
             if (followState == FollowState.FollowingWaypointPath) { return; }
 
-            PathToDestination = JUPathFinder.CalculatePath(transform.position + transform.forward * 0.1f, Destination);
+            PathToDestination = JUPathFinder.CalculatePath(transform.position, Destination);
             WaypointUtilities.DividePath(ref PathToDestination, 2);
 
             CurrentWayPointToFollow = 0;

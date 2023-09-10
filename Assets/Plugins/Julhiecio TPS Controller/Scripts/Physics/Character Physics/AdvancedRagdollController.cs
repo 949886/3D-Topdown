@@ -81,7 +81,7 @@ namespace JUTPS.PhysicsScripts
 		public bool FilterByBoneLayer = true;
 		private void Start()
 		{
-			StartAdvancedRagdollController();
+			Invoke(nameof(StartAdvancedRagdollController), 0.001f);
 		}
 		private void Update()
 		{

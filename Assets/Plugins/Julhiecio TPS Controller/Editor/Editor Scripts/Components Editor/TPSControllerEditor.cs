@@ -146,7 +146,7 @@ namespace JUTPS.CustomEditors
             if (StepCorrectionSettings)
             {
                 serializedObject.FindProperty("EnableStepCorrection").boolValue = EditorGUILayout.Toggle("  Step Correction", pl.EnableStepCorrection);
-                serializedObject.FindProperty("UpStepSpeed").floatValue = EditorGUILayout.Slider("  Up Step Speed", pl.UpStepSpeed, 2, 20);
+                serializedObject.FindProperty("UpStepSpeed").floatValue = EditorGUILayout.Slider("  Up Step Speed", pl.UpStepSpeed, 2, 15);
 
                 LayerMask tempMask = EditorGUILayout.MaskField("  Step Correction Layers", UnityEditorInternal.InternalEditorUtility.LayerMaskToConcatenatedLayersMask(pl.StepCorrectionMask), UnityEditorInternal.InternalEditorUtility.layers);
                 serializedObject.FindProperty("StepCorrectionMask").intValue = UnityEditorInternal.InternalEditorUtility.ConcatenatedLayersMaskToLayerMask(tempMask);
@@ -231,12 +231,15 @@ namespace JUTPS.CustomEditors
         {
             if (FireModeSettingsTab)
             {
-                serializedObject.FindProperty("PivotItemRotation").objectReferenceValue = EditorGUILayout.ObjectField("Item Aim Rotation Center", pl.PivotItemRotation, typeof(GameObject), true) as GameObject;
-                serializedObject.FindProperty("HumanoidSpine").objectReferenceValue = EditorGUILayout.ObjectField("Upper Chest Bone", pl.HumanoidSpine, typeof(GameObject), true) as Transform;
-                if (pl.HumanoidSpine == null)
-                {
-                    pl.HumanoidSpine = pl.GetLastSpineBone();
-                }
+                //serializedObject.FindProperty("PivotItemRotation").objectReferenceValue = EditorGUILayout.ObjectField("Item Aim Rotation Center", pl.PivotItemRotation, typeof(GameObject), true) as GameObject;
+                //serializedObject.FindProperty("HumanoidSpine").objectReferenceValue = EditorGUILayout.ObjectField("Upper Chest Spine Bone", pl.HumanoidSpine, typeof(GameObject), true) as Transform;
+                EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(pl.PivotItemRotation)));
+                EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(pl.HumanoidSpine)));
+
+                //if (pl.HumanoidSpine == null)
+                //{
+                //    pl.HumanoidSpine = pl.GetLastSpineBone();
+                //}
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("AimMode"));
                 serializedObject.FindProperty("FireModeMaxTime").floatValue = EditorGUILayout.Slider("FireMode Max Time", pl.FireModeMaxTime, 0, 50);
             }

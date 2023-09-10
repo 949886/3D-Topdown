@@ -329,7 +329,7 @@ namespace JUTPS.CameraSystems
 		/// <param name="VerticalAxis"> x axis input   </param>
 		/// <param name="HorizonalAxis"> y axis input  </param>
 		/// <param name="LerpSpeed"> lerp speed value  </param>
-		public virtual void RotateCamera(float VerticalAxis, float HorizonalAxis, float LerpSpeed = 30, Vector3 upward = default(Vector3), Transform AlternativeTargetToCalculate = null)
+		public virtual void RotateCamera(float VerticalAxis, float HorizonalAxis, float LerpSpeed = 30, Vector3 upward = default(Vector3), Transform AlternativeTargetToCalculate = null, bool UseTimeScale = true)
 		{
 			if (VerticalAxis != 0 && HorizonalAxis != 0)
 			{
@@ -337,15 +337,15 @@ namespace JUTPS.CameraSystems
 			}
 
 			//Rotation X
-			rotxtarget -= GeneralVerticalSensibility * VerticalAxis * CurrentCameraState.RotationSensibility;
+			rotxtarget -= (UseTimeScale ? Time.timeScale : 1) * GeneralVerticalSensibility * VerticalAxis * CurrentCameraState.RotationSensibility;
 			//Rotation Y
-			rotytarget += GeneralSensibility * HorizonalAxis * CurrentCameraState.RotationSensibility;
+			rotytarget += (UseTimeScale ? Time.timeScale : 1) * GeneralSensibility * HorizonalAxis * CurrentCameraState.RotationSensibility;
 			//Rotation X Clamp
 			rotxtarget = Mathf.Clamp(rotxtarget, CurrentCameraState.MinRotation, CurrentCameraState.MaxRotation);
 
 			//Smooth Rotations
-			rotX = Mathf.Lerp(rotX, rotxtarget, LerpSpeed * Time.fixedDeltaTime);
-			rotY = Mathf.Lerp(rotY, rotytarget, LerpSpeed * Time.fixedDeltaTime);
+			rotX = Mathf.Lerp(rotX, rotxtarget, LerpSpeed * Time.fixedDeltaTime * (UseTimeScale ? Time.timeScale : 1));
+			rotY = Mathf.Lerp(rotY, rotytarget, LerpSpeed * Time.fixedDeltaTime * (UseTimeScale ? Time.timeScale : 1));
 
 			//Set Rotations
 			var rot = Quaternion.Euler(new Vector3(rotX, rotY, 0));

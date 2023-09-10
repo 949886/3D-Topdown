@@ -146,6 +146,8 @@ namespace JUTPS.CustomEditors
                 serializedObject.FindProperty("BulletsPerMagazine").intValue = EditorGUILayout.IntField("Bullets For Reload", w.BulletsPerMagazine);
                 GUILayout.Space(5);
                 serializedObject.FindProperty("NumberOfShotgunBulletsPerShot").intValue = EditorGUILayout.IntField("Number Of Shotgun Bullets Per Shot", w.NumberOfShotgunBulletsPerShot);
+                serializedObject.FindProperty(nameof(w.InfiniteAmmo)).boolValue = EditorGUILayout.Toggle("Infinite Ammo", w.InfiniteAmmo);
+
             }
         }
         public void ProceduralAnimationVariables(Weapon w)

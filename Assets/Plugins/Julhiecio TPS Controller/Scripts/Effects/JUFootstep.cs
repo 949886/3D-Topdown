@@ -58,6 +58,11 @@ namespace JUTPS.FX
         // Update is called once per frame
         protected virtual void Update()
         {
+            if(LeftFoot == null || RightFoot == null)
+            {
+                LeftFoot = anim.GetBoneTransform(HumanBodyBones.LeftFoot);
+                RightFoot = anim.GetBoneTransform(HumanBodyBones.RightFoot);
+            }
             Vector3 LeftFootPosition = LeftFoot.position + transform.forward * ForwardOffset + transform.up * UpOffset;
             Vector3 RightFootPosition = RightFoot.position + transform.forward * ForwardOffset + transform.up * UpOffset;
 
@@ -163,30 +168,46 @@ namespace JUTPS.FX
             footsteper.FootstepAudioClips[0].SurfaceTag = "Untagged";
             for (int i = 0; i < 4; i++)
             {
-                footsteper.FootstepAudioClips[0].AudioClips[i] =
-                    AssetDatabase.LoadAssetAtPath<AudioClip>(path + "Concrete/Footstep on Concrete 0" + (i + 1) + ".ogg");
+                string audioClipPath = path + "Concrete/Footstep on Concrete 0" + (i + 1) + " OGG.ogg";
+                if (!System.IO.File.Exists(audioClipPath))
+                {
+                    Debug.LogWarning("Unable to load default audio: " + audioClipPath);
+                }
+                footsteper.FootstepAudioClips[0].AudioClips[i] = AssetDatabase.LoadAssetAtPath<AudioClip>(audioClipPath);
             }
 
             footsteper.FootstepAudioClips[1].SurfaceTag = "Stone";
             for (int i = 0; i < 4; i++)
             {
                 //Assets/Julhiecio TPS Controller/Audio/Footstep/CC0 Sounds/Stones/Footsteps-on-stone01.ogg
-                footsteper.FootstepAudioClips[1].AudioClips[i] =
-                    AssetDatabase.LoadAssetAtPath<AudioClip>(path + "Stones/Footsteps-on-stone0" + (i + 1) + ".ogg");
+                string audioClipPath = path + "Stones/Footsteps-on-stone0" + (i + 1) + ".ogg";
+                if (!System.IO.File.Exists(audioClipPath))
+                {
+                    Debug.LogWarning("Unable to load default audio: " + audioClipPath);
+                }
+                footsteper.FootstepAudioClips[0].AudioClips[i] = AssetDatabase.LoadAssetAtPath<AudioClip>(audioClipPath);
             }
 
             footsteper.FootstepAudioClips[2].SurfaceTag = "Grass";
             for (int i = 0; i < 4; i++)
             {
-                footsteper.FootstepAudioClips[2].AudioClips[i] =
-                    AssetDatabase.LoadAssetAtPath<AudioClip>(path + "Grass/Footsteps-on-grass0" + (i + 1) + ".ogg");
+                string audioClipPath = path + "Grass/Footsteps-on-grass0" + (i + 1) + ".ogg";
+                if (!System.IO.File.Exists(audioClipPath))
+                {
+                    Debug.LogWarning("Unable to load default audio: " + audioClipPath);
+                }
+                footsteper.FootstepAudioClips[0].AudioClips[i] = AssetDatabase.LoadAssetAtPath<AudioClip>(audioClipPath);
             }
 
             footsteper.FootstepAudioClips[3].SurfaceTag = "Tiles";
             for (int i = 0; i < 4; i++)
             {
-                footsteper.FootstepAudioClips[3].AudioClips[i] =
-                    AssetDatabase.LoadAssetAtPath<AudioClip>(path + "Tiles/Footstep-on-tiles0" + (i + 1) + ".ogg");
+                string audioClipPath = path + "Tiles/Footstep-on-tiles0" + (i + 1) + ".ogg";
+                if (!System.IO.File.Exists(audioClipPath))
+                {
+                    Debug.LogWarning("Unable to load default audio: " + audioClipPath);
+                }
+                footsteper.FootstepAudioClips[0].AudioClips[i] = AssetDatabase.LoadAssetAtPath<AudioClip>(audioClipPath);
             }
         }
 #endif

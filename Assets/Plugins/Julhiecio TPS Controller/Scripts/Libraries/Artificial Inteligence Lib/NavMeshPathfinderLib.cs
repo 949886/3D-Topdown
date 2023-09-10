@@ -13,36 +13,74 @@ namespace JUTPS.AI
         /// <param name="SourcePosition">Source position</param>
         /// <param name="TargetPosition">Target position</param>
         /// <returns></returns>
-        public static Vector3[] CalculatePath(Vector3 SourcePosition, Vector3 TargetPosition)
+        public static Vector3[] CalculatePath(Vector3 SourcePosition, Vector3 TargetPosition, int NavmeshArea = 1)
         {
+            //Check Navmesh Existence
+            NavMeshHit hitNv;
+            NavMesh.SamplePosition(SourcePosition, out hitNv, 100, NavmeshArea);
+            if (!hitNv.hit)
+            {
+                Debug.LogWarning("Unable to calculate path, make sure the Navmesh in your scene is baked");
+                return new Vector3[0] { };
+            }
+
+            // > [ Old Code ]
+            //Calculate path
+            //NavMeshPath navmesh_path = new NavMeshPath();
+
+            //if (NavMesh.FindClosestEdge(TargetPosition, out NavMeshHit hit, NavmeshArea))
+            //{
+            //    NavMesh.CalculatePath(SourcePosition, hit.position, NavmeshArea, navmesh_path);
+            //}
+            //Get path
+            //Vector3[] Path = navmesh_path.corners;
+
+            //Return the path
+            //return Path;
+            // < [ Old Code ]
+
             //Calculate path
             NavMeshPath navmesh_path = new NavMeshPath();
-            NavMesh.CalculatePath(SourcePosition, TargetPosition, NavMesh.AllAreas, navmesh_path);
+            //NavMesh.CalculatePath(SourcePosition, hitNv.position, NavmeshArea, navmesh_path);
 
-            //If cannot do pathfinding with current position, create a path with the closest navmesh edge
-            if (navmesh_path.status == NavMeshPathStatus.PathInvalid)
+            if (NavMesh.FindClosestEdge(TargetPosition, out NavMeshHit hitt, NavmeshArea))
             {
-                NavMeshHit hit;
-                NavMesh.SamplePosition(SourcePosition, out hit, 100, NavMesh.AllAreas);
-                //Could not calculate path
-                if (!hit.hit) { Debug.LogWarning("Could not calculate NavMesh path, invalid target/source position"); return new Vector3[0] { }; }
-                NavMesh.CalculatePath(hit.position, TargetPosition, NavMesh.AllAreas, navmesh_path);
+                NavMesh.CalculatePath(SourcePosition, hitt.position, NavmeshArea, navmesh_path);
+                //return navmesh_path.corners;
             }
+
+
             //If still invalid
-            if (navmesh_path.status == NavMeshPathStatus.PathInvalid)
+            if (navmesh_path.status == NavMeshPathStatus.PathPartial || navmesh_path.status == NavMeshPathStatus.PathInvalid)
             {
                 //Get valid source position
                 NavMeshHit hit;
-                NavMesh.SamplePosition(SourcePosition, out hit, 100, NavMesh.AllAreas);
+                NavMesh.SamplePosition(SourcePosition, out hit, 10, NavmeshArea);
                 //Get valid END position
                 NavMeshHit hitEnd;
-                NavMesh.SamplePosition(TargetPosition, out hitEnd, 100, NavMesh.AllAreas);
+                NavMesh.SamplePosition(TargetPosition, out hitEnd, 10, NavmeshArea);
 
                 if (!hit.hit || !hitEnd.hit) { Debug.LogWarning("Could not calculate NavMesh path, invalid target/source position"); return new Vector3[0] { }; }
 
                 //Set position
-                NavMesh.CalculatePath(hit.position, hitEnd.position, NavMesh.AllAreas, navmesh_path);
+                NavMesh.CalculatePath(hit.position, hitEnd.position, NavmeshArea, navmesh_path);
             }
+
+            // >[ Old Code ]
+            /* 
+            //If cannot do pathfinding with current position, create a path with the closest navmesh edge
+            if (navmesh_path.status == NavMeshPathStatus.PathInvalid)
+            {
+                NavMeshHit hit;
+                NavMesh.SamplePosition(SourcePosition, out hit, 10, NavmeshArea);
+
+                //Could not calculate path
+                if (!hit.hit) { Debug.LogWarning("Could not calculate NavMesh path, invalid target/source position"); return new Vector3[0] { }; }
+
+                NavMesh.CalculatePath(hit.position, TargetPosition, NavmeshArea, navmesh_path);
+            }*/
+
+            // < [ Old Code ]
 
 
             //Get path
@@ -50,6 +88,10 @@ namespace JUTPS.AI
 
             //Return the path
             return Path;
+
+            
+
+            // [ Old Code ]
         }
         /// <summary>
         /// Calculates the path from the source position to a target position. It is necessary to bake NavMesh in the scene.
@@ -99,7 +141,7 @@ namespace JUTPS.AI
             Vector3 position = Vector3.zero;
 
             NavMeshHit hit;
-            NavMesh.SamplePosition(targetPosition, out hit, 100, NavMesh.AllAreas);
+            NavMesh.SamplePosition(targetPosition, out hit, 2, NavMesh.AllAreas);
 
             Vector3 dir = (targetPosition - hit.position).normalized;
             position = hit.position - dir * offsetDirection;

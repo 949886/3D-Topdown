@@ -857,14 +857,20 @@ PrefabInstance:
     - target: {fileID: 7915502660780657784, guid: 64cffa41d4914434793c63e0c62214af,
         type: 3}
       propertyPath: Destination.x
-      value: 2.36
+      value: 4.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7915502660780657784, guid: 64cffa41d4914434793c63e0c62214af,
+        type: 3}
+      propertyPath: Destination.y
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 7915502660780657785, guid: 64cffa41d4914434793c63e0c62214af,
         type: 3}
       propertyPath: m_Name
       value: Zombi AI Sample (1)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7428040190437420373, guid: 64cffa41d4914434793c63e0c62214af, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 64cffa41d4914434793c63e0c62214af, type: 3}
 --- !u!1 &671680272 stripped
 GameObject:
@@ -1238,7 +1244,12 @@ PrefabInstance:
     - target: {fileID: 7915502660780657784, guid: 64cffa41d4914434793c63e0c62214af,
         type: 3}
       propertyPath: Destination.x
-      value: 2.36
+      value: 4.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7915502660780657784, guid: 64cffa41d4914434793c63e0c62214af,
+        type: 3}
+      propertyPath: Destination.y
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 7915502660780657784, guid: 64cffa41d4914434793c63e0c62214af,
         type: 3}
@@ -1250,7 +1261,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: Zombi AI Sample
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7428040190437420373, guid: 64cffa41d4914434793c63e0c62214af, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 64cffa41d4914434793c63e0c62214af, type: 3}
 --- !u!1 &683948767 stripped
 GameObject:
@@ -2200,7 +2212,12 @@ PrefabInstance:
     - target: {fileID: 7915502660780657784, guid: 64cffa41d4914434793c63e0c62214af,
         type: 3}
       propertyPath: Destination.x
-      value: 2.36
+      value: 4.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7915502660780657784, guid: 64cffa41d4914434793c63e0c62214af,
+        type: 3}
+      propertyPath: Destination.y
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 7915502660780657784, guid: 64cffa41d4914434793c63e0c62214af,
         type: 3}
@@ -2212,7 +2229,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: Zombi AI Sample (2)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7428040190437420373, guid: 64cffa41d4914434793c63e0c62214af, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 64cffa41d4914434793c63e0c62214af, type: 3}
 --- !u!1 &1076152827 stripped
 GameObject:
@@ -3953,71 +3971,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5478340313042597211, guid: 8b47cd8d07f6ede42b5e23b0c91a5228,
-        type: 3}
-      propertyPath: ItemToEquipOnStart
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5478340313042597223, guid: 8b47cd8d07f6ede42b5e23b0c91a5228,
-        type: 3}
-      propertyPath: BlockVerticalInput
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6198696463453899550, guid: 8b47cd8d07f6ede42b5e23b0c91a5228,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0.00043160655
-      objectReference: {fileID: 0}
-    - target: {fileID: 6198696463453899550, guid: 8b47cd8d07f6ede42b5e23b0c91a5228,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.04600689
-      objectReference: {fileID: 0}
-    - target: {fileID: 6198696463453899550, guid: 8b47cd8d07f6ede42b5e23b0c91a5228,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0.3634192
-      objectReference: {fileID: 0}
-    - target: {fileID: 6317972164670629894, guid: 8b47cd8d07f6ede42b5e23b0c91a5228,
-        type: 3}
-      propertyPath: TotalBullets
-      value: 248
-      objectReference: {fileID: 0}
-    - target: {fileID: 7184571148519841216, guid: 8b47cd8d07f6ede42b5e23b0c91a5228,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -0.117424354
-      objectReference: {fileID: 0}
-    - target: {fileID: 7184571148519841216, guid: 8b47cd8d07f6ede42b5e23b0c91a5228,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.012796268
-      objectReference: {fileID: 0}
-    - target: {fileID: 7184571148519841216, guid: 8b47cd8d07f6ede42b5e23b0c91a5228,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0.18052924
-      objectReference: {fileID: 0}
-    - target: {fileID: 7184571148519841216, guid: 8b47cd8d07f6ede42b5e23b0c91a5228,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.26744607
-      objectReference: {fileID: 0}
-    - target: {fileID: 7184571148519841216, guid: 8b47cd8d07f6ede42b5e23b0c91a5228,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0.48822063
-      objectReference: {fileID: 0}
-    - target: {fileID: 7184571148519841216, guid: 8b47cd8d07f6ede42b5e23b0c91a5228,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0.05070458
-      objectReference: {fileID: 0}
-    - target: {fileID: 7184571148519841216, guid: 8b47cd8d07f6ede42b5e23b0c91a5228,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0.82918173
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8b47cd8d07f6ede42b5e23b0c91a5228, type: 3}

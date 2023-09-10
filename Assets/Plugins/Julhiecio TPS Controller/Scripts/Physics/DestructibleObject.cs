@@ -49,11 +49,11 @@ namespace JUTPS.DestructibleSystem
 
                 if (DoSlowmotionWhenDestroy)
                 {
-                    Slowmotion.DoSlowMotion(0.1f, 5f);
+                    JUSlowmotion.DoSlowMotion(0.1f, 5f);
                 }
                 if (DoSlowmotionWhenPlayerIsJumping && FindObjectOfType<JUCharacterController>().IsJumping)
                 {
-                    Slowmotion.DoSlowMotion(0.1f, 5f);
+                    JUSlowmotion.DoSlowMotion(0.1f, 5f);
                 }
 
 

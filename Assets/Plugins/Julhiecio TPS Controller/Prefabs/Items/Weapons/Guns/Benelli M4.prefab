@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3767902785355241964}
   - component: {fileID: 8047097017070325310}
   - component: {fileID: 7206143403383268185}
+  - component: {fileID: -8685322561433834658}
   m_Layer: 14
   m_Name: Benelli M4
   m_TagString: Untagged
@@ -195,6 +196,7 @@ MonoBehaviour:
   TotalBullets: 48
   BulletsAmounts: 8
   NumberOfShotgunBulletsPerShot: 12
+  InfiniteAmmo: 0
   Fire_Rate: 0.8
   CurrentFireRateToShoot: 0
   Precision: 20
@@ -245,6 +247,31 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &-8685322561433834658
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5649899735864999517}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98fd76a429c4c664ab8d5c09832091fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ToUpDirectionWieldingID: 5
+  RayDistance: 0.8
+  BlockFireModeOnPreventClipping: 1
+  WallsLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  IsPreventing: 0
+  OnPrevent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnStopPrevent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &6142990378359667555
 GameObject:
   m_ObjectHideFlags: 0

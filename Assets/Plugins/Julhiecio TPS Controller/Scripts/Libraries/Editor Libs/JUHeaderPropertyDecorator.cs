@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using UnityEditor;
-
+using System.Reflection;
 namespace JUTPSEditor.JUHeader
 { 
 
@@ -42,6 +42,31 @@ namespace JUTPSEditor.JUHeader
             this.DisableOnFalse = disableonfalse;
         }
     }
+
+
+
+    [System.AttributeUsage(System.AttributeTargets.All, AllowMultiple = true, Inherited = true)]
+    public class JUButton : PropertyAttribute
+    {
+        public string methodName;
+        public string labelText;
+
+        private System.Type classType;
+
+        public System.Type ClassType
+        {
+            get { return classType; }
+            set { classType = value; }
+        }
+
+        public JUButton(string labelText = "Button", System.Type scriptType = default(System.Type), string methodName = "")
+        {
+            this.methodName = methodName;
+            this.labelText = labelText;
+            ClassType = scriptType;
+        }
+    }
+
 
 #if UNITY_EDITOR
 
@@ -190,6 +215,44 @@ namespace JUTPSEditor.JUHeader
             }
         }
     }
+
+
+
+    [CustomPropertyDrawer(typeof(JUButton))]
+    class JUButtonPropertyDrawer : DecoratorDrawer
+    {
+        JUButton jubutton
+        {
+            get { return ((JUButton)attribute); }
+        }
+        public override float GetHeight()
+        {
+            return base.GetHeight() + 5;
+        }
+
+        public override void OnGUI(Rect position)
+        {
+            JUButton tAttribute = attribute as JUButton;
+
+            UnityEngine.Object theObject = Selection.activeGameObject.GetComponent(tAttribute.ClassType) as UnityEngine.Object;
+            
+            if (jubutton.methodName == "")
+            {
+                GUI.Button(position, jubutton.labelText);
+            }
+            else
+            {
+                if (GUI.Button(position, jubutton.labelText))
+                {
+                    MethodInfo tMethod = theObject.GetType().GetMethod(tAttribute.methodName);
+                    tMethod.Invoke(theObject, null);
+                }
+            }
+        }
+    }
+
+    
+
 #endif
 }
 

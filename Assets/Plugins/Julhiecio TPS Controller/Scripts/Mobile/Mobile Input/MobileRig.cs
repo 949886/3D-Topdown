@@ -349,14 +349,22 @@ namespace JUTPS.CrossPlataform
 
             if (JumpButton != null)
             {
-                if (JumpButton.IsPressed || BrakeButton.IsPressed)
+                if (JumpButton.IsPressed)
                 {
                     JUInput.RewriteInputButtonPressed(JUInput.Buttons.JumpButton, true);
-                    //Driving Brake Button
-                    if (BrakeButton != null)
-                    {
-                        JUInput.RewriteInputButtonPressed(JUInput.Buttons.JumpButton, BrakeButton.IsPressed);
-                    }
+                }
+                else
+                {
+                    JUInput.RewriteInputButtonPressed(JUInput.Buttons.JumpButton, false);
+                }
+
+            }
+
+            if (BrakeButton != null && DrivingScreenPanel.activeInHierarchy == true)
+            {
+                if (BrakeButton.IsPressed)
+                {
+                    JUInput.RewriteInputButtonPressed(JUInput.Buttons.JumpButton, true);
                 }
                 else
                 {

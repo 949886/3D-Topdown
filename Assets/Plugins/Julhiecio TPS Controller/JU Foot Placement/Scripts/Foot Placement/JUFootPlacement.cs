@@ -117,8 +117,10 @@ namespace JUTPS
         [JUReadOnly("AdvancedMode")] public float GroundCheckRadius = 0.1f;
         void Start()
         {
-            Invoke("StartFootPlacement", 0.1f);
+            Invoke(nameof(StartFootPlacement), 0.1f);
             GetFootPlacementDependencies();
+            Invoke(nameof(GetFootPlacementDependencies), 0.01f);
+
         }
         void LateUpdate()
         {
@@ -141,6 +143,7 @@ namespace JUTPS
                 anim = GetComponent<Animator>();
                 LeftFoot = anim.GetBoneTransform(HumanBodyBones.LeftFoot);
                 RightFoot = anim.GetBoneTransform(HumanBodyBones.RightFoot);
+                if (LeftFoot == null || RightFoot == null) return;
 
                 SmothedLeftFootPosition = LeftFoot.position - transform.forward * 0.1f;
                 SmothedRightFootPosition = RightFoot.position - transform.forward * 0.1f;
@@ -167,6 +170,8 @@ namespace JUTPS
         }
         private void FootPlacementPositions()
         {
+            if (RightFoot == null || LeftFoot == null || LeftFootBase_UP == null || RightFootBase_UP == null) return;
+
             if (UseDynamicFootPlacing == true)
             {
                 LeftFootHeightFromGround = FootHeightMultiplier * AnimationLeftFootPositionY;

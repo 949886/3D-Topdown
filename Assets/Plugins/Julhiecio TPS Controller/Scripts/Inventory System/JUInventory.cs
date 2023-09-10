@@ -46,8 +46,9 @@ namespace JUTPS.InventorySystem
         public Vector3 CheckerOffset;
         public float CheckerRadious = 1;
         public bool UseDefaultInputToPickUp = true;
+        public bool AutoEquipPickedUpItems = true;
         [Range(0, 1)]
-        public float HoldTimeToPickUp = 0.5f;
+        public float HoldTimeToPickUp = 0.1f;
         private float CurrentHoldTimeToPickUp;
         private float CurrentTimeToDisablePickingUpState;
         [HideInInspector] public Item ItemToPickUp;
@@ -137,13 +138,47 @@ namespace JUTPS.InventorySystem
         [ContextMenu(" >>> Setup Itens", false, 100)]
         public void SetupItens()
         {
-            AllHoldableItems = GetComponentsInChildren<HoldableItem>();
-            HoldableItensLeftHand = GetAllItemsOnCharacterHand(gameObject, false);
-            HoldableItensRightHand = GetAllItemsOnCharacterHand(gameObject, true);
-            AllItems = GetComponentsInChildren<Item>();
+            if (IsALoot)
+            {
+                AllHoldableItems = GetComponentsInChildren<HoldableItem>();
+                HoldableItensLeftHand = GetAllItemsOnCharacterHand(gameObject, false);
+                HoldableItensRightHand = GetAllItemsOnCharacterHand(gameObject, true);
+                AllItems = GetComponentsInChildren<Item>();
+                return;
+            }
+
+            if(JUCharacter == null)
+            {
+                JUCharacter = GetComponent<JUTPS.CharacterBrain.JUCharacterBrain>();
+            }
+            if(JUCharacter != null)
+            {
+                if(JUCharacter.anim == null) { JUCharacter.anim = GetComponent<Animator>(); }
+            }
+            else { Debug.LogError("No JU Character Controller/Brain"); return; }
+
+            if (JUCharacter.anim != null)
+            {
+                if (JUCharacter.anim.GetBoneTransform(HumanBodyBones.RightHand) == null || JUCharacter.anim.GetBoneTransform(HumanBodyBones.RightHand) == null)
+                {
+                    if (IsInvoking(nameof(SetupItens)))
+                    {
+                        Debug.LogWarning("Unable to setup items on this character on game start as there was a problem with the character's rig, inventory will try again soon");
+                        Invoke(nameof(SetupItens), 0.1f);
+                    }
+                    return;
+                }
+
+                AllHoldableItems = GetComponentsInChildren<HoldableItem>();
+                HoldableItensLeftHand = GetAllItemsOnCharacterHand(gameObject, false);
+                HoldableItensRightHand = GetAllItemsOnCharacterHand(gameObject, true);
+                AllItems = GetComponentsInChildren<Item>();
+            }
         }
         public static void CorrectSwitchIDs(HoldableItem[] ItemsArray)
         {
+            if (ItemsArray == null) return;
+
             for (int i = 0; i < ItemsArray.Length; i++)
             {
                 if (ItemsArray[i].ItemSwitchID != i)
@@ -201,6 +236,8 @@ namespace JUTPS.InventorySystem
             Animator anim = character.GetComponent<Animator>();
 
             if (anim == null) { Debug.LogError("Unable to find items in hands because there is no animator"); return null; }
+            if (anim.isHuman == false) { Debug.LogError("Unable to find items in hands because the animator is not a humanoid"); return null; }
+            if (anim.GetBoneTransform(HumanBodyBones.RightHand) == null) { Debug.LogWarning("Unable to find items in hands because the animator is not a humanoid"); return null; }
 
             Transform hand = RightHand ? anim.GetBoneTransform(HumanBodyBones.RightHand) : anim.GetBoneTransform(HumanBodyBones.LeftHand);
             items = hand.GetComponentsInChildren<HoldableItem>();
@@ -241,18 +278,18 @@ namespace JUTPS.InventorySystem
         {
             if (InventoryToAddItem.ItemToPickUp != null)
             {
-                Debug.Log("Called PickUpItem method 1");
+                //Debug.Log("Called PickUpItem method 1");
 
                 //Check if item is holdable
                 if (InventoryToAddItem.ItemToPickUp is HoldableItem)
                 {
-                    Debug.Log("Called PickUpItem method 2");
+                    //Debug.Log("Called PickUpItem method 2");
 
                     //Get holdable monobehaviour
                     var PickedItemToUnlock = InventoryToAddItem.ItemToPickUp.GetComponent<HoldableItem>();
                     foreach (HoldableItem ItemInInventoryToUnlock in InventoryToAddItem.AllHoldableItems)
                     {
-                        Debug.Log("Called PickUpItem method 3");
+                        //Debug.Log("Called PickUpItem method 3");
                         if (ItemInInventoryToUnlock.ItemName == PickedItemToUnlock.ItemName && ItemInInventoryToUnlock.IsLeftHandItem == PickedItemToUnlock.IsLeftHandItem)
                         {
                             //Unlock item on inventory
@@ -274,6 +311,10 @@ namespace JUTPS.InventorySystem
                             }*/
                             InventoryToAddItem.IsPickingItem = true;
 
+                            if (InventoryToAddItem.AutoEquipPickedUpItems)
+                            {
+                                InventoryToAddItem.JUCharacter.SwitchToItem(ItemInInventoryToUnlock.ItemSwitchID, !ItemInInventoryToUnlock.IsLeftHandItem);
+                            }
                             return;
                         }
                     }
@@ -435,6 +476,7 @@ namespace JUTPS.InventorySystem
             }
             else
             {
+
                 if (id < -1)
                 {
                     CurrentLeftHandItemID = HoldableItensLeftHand.Length - 1;

@@ -205,6 +205,7 @@ GameObject:
   - component: {fileID: 6169894348648410233}
   - component: {fileID: 3942127450275473179}
   - component: {fileID: 3979216840810669336}
+  - component: {fileID: 4718958963499442189}
   m_Layer: 14
   m_Name: UMP
   m_TagString: Untagged
@@ -378,6 +379,7 @@ MonoBehaviour:
   TotalBullets: 38
   BulletsAmounts: 38
   NumberOfShotgunBulletsPerShot: 12
+  InfiniteAmmo: 0
   Fire_Rate: 0.09
   CurrentFireRateToShoot: 0.0933857
   Precision: 20
@@ -443,6 +445,31 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &4718958963499442189
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2699567156601855460}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98fd76a429c4c664ab8d5c09832091fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ToUpDirectionWieldingID: 5
+  RayDistance: 0.5
+  BlockFireModeOnPreventClipping: 1
+  WallsLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  IsPreventing: 0
+  OnPrevent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnStopPrevent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &6083344395494953046
 GameObject:
   m_ObjectHideFlags: 0

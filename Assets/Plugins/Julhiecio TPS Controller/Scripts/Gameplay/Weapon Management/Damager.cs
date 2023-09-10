@@ -41,7 +41,8 @@ namespace JUTPS
         private void Awake()
         {
             startedLocalPosition = transform.localPosition;
-            Owner = GetComponentInParent<JUTPS.CharacterBrain.JUCharacterBrain>().gameObject;
+            CharacterBrain.JUCharacterBrain tpsCharacter = GetComponentInParent<CharacterBrain.JUCharacterBrain>();
+            Owner = tpsCharacter == null ? null : tpsCharacter.gameObject;
         }
         private void Start()
         {
@@ -124,8 +125,6 @@ namespace JUTPS
 
         private void OnCollisionEnter(Collision collision)
         {
-            //if (RaycastingMode) return;
-
             for (int i = 0; i < TagsToDamage.Length; i++)
             {
                 if (collision.transform.tag == TagsToDamage[i] && CanHit)
@@ -142,6 +141,25 @@ namespace JUTPS
                 }
             }
         }
+        private void OnTriggerEnter(Collider other)
+        {
+            for (int i = 0; i < TagsToDamage.Length; i++)
+            {
+                if (other.transform.tag == TagsToDamage[i] && CanHit)
+                {
+                    if (other.gameObject.layer == 9)
+                    {
+                        if (other.gameObject.GetComponentInChildren<DamageableBodyPart>() != null) return;
+                    }
+
+                    DoDamage(other, Damage, HitParticlesList, HitSoundsAudioSource);
+                    Collided = true;
+                    Invoke(nameof(DisableCollidedState), 0.1f);
+                    DisableDamagingForSeconds(HitMinTime);
+                }
+            }
+        }
+
         private void OnDrawGizmos()
         {
             if (RaycastingMode)
@@ -158,16 +176,48 @@ namespace JUTPS
                 Gizmos.DrawWireCube(Vector3.zero, Vector3.one);
             }
         }
+
+        public void DoDamage(Collider trigger, float damage, List<SurfaceAudiosWithFX> hitParticles, AudioSource hitAudioSource)
+        {
+            DamageableBodyPart bodyPart = trigger.gameObject.GetComponentInChildren<DamageableBodyPart>();
+            Vector3 damagePoint = trigger.ClosestPoint(transform.position);
+            float realDamage = damage;
+            if (bodyPart == null)
+            {
+                JUHealth health = trigger.gameObject.GetComponentInParent<JUHealth>();
+                if (health != null)
+                {
+                    //Do Damage
+                    health.DoDamage(damage);
+
+                    //Hit Marker
+                    if (Owner != null)
+                    {
+                        if (health.IsDead == false) HitMarkerEffect.HitCheck(health.transform.tag, Owner.tag, damagePoint, realDamage);
+                    }
+                }
+            }
+            else
+            {
+                realDamage = bodyPart.DoDamage(damage);
+                if (Owner != null && bodyPart != null && realDamage > 0)
+                {
+                    if (bodyPart.Health.IsDead == false) HitMarkerEffect.HitCheck(bodyPart.transform.tag, Owner.tag, damagePoint, realDamage);
+                }
+            }
+
+            //Instantiate Particle FX
+            Vector3 contactPoint = trigger.ClosestPoint(transform.position);
+
+            Vector3 contactNormal = (transform.position - trigger.ClosestPoint(transform.position)).normalized;
+
+            Quaternion particleRotation = Quaternion.LookRotation(contactNormal);
+            GameObject fx = SurfaceAudiosWithFX.Play(hitAudioSource, hitParticles, contactPoint, particleRotation, null, bodyPart != null ? bodyPart.tag : trigger.transform.tag);
+            fx.transform.parent = trigger.transform;
+        }
+
         public void DoDamage(Collision collision, float damage, List<SurfaceAudiosWithFX> hitParticles, AudioSource hitAudioSource)
         {
-            /*
-            JUHealth health = collision.transform.GetComponentInParent<JUHealth>();
-            if (health != null)
-            {
-                //Do Damage
-                health.DoDamage(damage);
-            }*/
-
             DamageableBodyPart bodyPart = collision.gameObject.GetComponentInChildren<DamageableBodyPart>();
             Vector3 damagePoint = collision.contacts[0].point;
             float realDamage = damage;

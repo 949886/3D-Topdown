@@ -89,8 +89,11 @@ namespace JUTPS.ItemSystem
 			RefreshItemDependencies();
 			CurrentTimeToUse = TimeToUse;
 		}
-
-		public void RefreshItemDependencies()
+        private void Awake()
+        {
+			RefreshItemDependencies();
+        }
+        public void RefreshItemDependencies()
         {
 			if (Owner == null || TPSOwner == null)
 			{
@@ -99,6 +102,12 @@ namespace JUTPS.ItemSystem
 					Owner = transform.GetComponentInParent<JUCharacterController>().gameObject;
 					TPSOwner = Owner.GetComponent<JUCharacterController>();
 					if (TPSOwner.anim == null) TPSOwner.anim = TPSOwner.GetComponent<Animator>();
+
+					if (TPSOwner.anim.GetBoneTransform(HumanBodyBones.LeftHand) == null)
+                    {
+						if (IsInvoking(nameof(RefreshItemDependencies)) == false) { Invoke(nameof(RefreshItemDependencies), 0.1f); }
+						return;
+                    }
 
 					IsLeftHandItem = (TPSOwner.anim.GetBoneTransform(HumanBodyBones.LeftHand).transform == transform.parent) ? true : false;
 
