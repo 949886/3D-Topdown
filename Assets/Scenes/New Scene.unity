@@ -607,6 +607,10 @@ MonoBehaviour:
     type: 2}
   m_backgroundPassURPMaterial: {fileID: 2100000, guid: 158324d8c1e4d4345b028d3e3558630f,
     type: 2}
+  m_colorGradingLutBuilderLdrURPMaterial: {fileID: 2100000, guid: 9c52f119ff34041039befa80a076fd0a,
+    type: 2}
+  m_colorGradingUberPostURPMaterial: {fileID: 2100000, guid: ed79692f7fcac48ec8f2b35d06062b99,
+    type: 2}
 --- !u!114 &147108813
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1198,6 +1202,7 @@ MonoBehaviour:
   CheckerOffset: {x: 0, y: 0, z: 0}
   CheckerRadious: 1
   UseDefaultInputToPickUp: 1
+  AutoEquipPickedUpItems: 1
   HoldTimeToPickUp: 0.5
   ItemToPickUp: {fileID: 0}
   ItemsAround: []
@@ -2221,6 +2226,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8103260765398148010, guid: 9ce03ed22613ec94794c2173f187f0bf,
+        type: 3}
+      propertyPath: m_BlockingMask.m_Bits
+      value: 261943
       objectReference: {fileID: 0}
     - target: {fileID: 8103260765398148013, guid: 9ce03ed22613ec94794c2173f187f0bf,
         type: 3}
@@ -3410,6 +3420,7 @@ MonoBehaviour:
   TotalBullets: 32
   BulletsAmounts: 16
   NumberOfShotgunBulletsPerShot: 12
+  InfiniteAmmo: 0
   Fire_Rate: 0.1
   CurrentFireRateToShoot: 0
   Precision: 25

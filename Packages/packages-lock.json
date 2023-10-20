@@ -506,6 +506,25 @@
       },
       "url": "https://packages.unity.com"
     },
+    "localization": {
+      "version": "https://github.com/stellar-eclipse/Unity-Localization.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.unity.inputsystem": "1.6.3",
+        "com.unity.textmeshpro": "3.0.6"
+      },
+      "hash": "fbb1f65cb35e12d19e62398bf78d795652a41186"
+    },
+    "uiwidgets": {
+      "version": "https://github.com/stellar-eclipse/Unity-UIWidgets.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.unity.ugui": "1.0.0"
+      },
+      "hash": "67d1cc12f4c99c0842c2b05c7d3e62a72583e65e"
+    },
     "com.unity.modules.ai": {
       "version": "1.0.0",
       "depth": 0,

@@ -28,6 +28,8 @@
     "com.unity.ugui": "1.0.0",
     "com.unity.uiextensions": "files:./com.unity.uiextensions",
     "com.unity.visual-compositor": "0.30.1-preview",
+    "localization": "https://github.com/stellar-eclipse/Unity-Localization.git",
+    "uiwidgets": "https://github.com/stellar-eclipse/Unity-UIWidgets.git",
     "com.unity.modules.ai": "1.0.0",
     "com.unity.modules.androidjni": "1.0.0",
     "com.unity.modules.animation": "1.0.0",
